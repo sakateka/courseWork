@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Курсовая работа</string>
+    <string name="app_calc">Калькулятор</string>
+    <string name="back">back</string>
+    <string name="clear">clear</string>
+    <string name="mod">mod</string>
+    <string name="pow">pow</string>
+    <string name="option">Вариант №2</string>
+    <string name="ask_text">Выберите задание</string>
+    <string name="task_1">Задание №1</string>
+    <string name="task_2">Задание №2</string>
+    <string name="task_3">Задание №3</string>
+    <string name="task_4">Задание №4</string>
+</resources>

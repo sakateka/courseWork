@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.skacheev.myapplication.MainActivity">
+
+    <Button
+        android:id="@+id/btn_task_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_task_4"
+        android:layout_alignLeft="@+id/btn_task_4"
+        android:layout_alignStart="@+id/btn_task_4"
+        android:layout_marginBottom="61dp"
+        android:onClick="switchActivity"
+        android:text="@string/task_3"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="104dp" />
+
+    <TextView
+        android:id="@+id/text_ask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ask_text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp" />
+
+    <Button
+        android:id="@+id/btn_task_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_task_3"
+        android:layout_alignStart="@+id/btn_task_3"
+        android:layout_centerVertical="true"
+        android:onClick="switchActivity"
+        android:text="@string/task_2"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="167dp" />
+
+    <Button
+        android:id="@+id/btn_task_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_task_2"
+        android:layout_alignLeft="@+id/btn_task_4"
+        android:layout_alignStart="@+id/btn_task_4"
+        android:layout_marginBottom="16dp"
+        android:onClick="switchActivity"
+        android:text="@string/task_1"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <Button
+        android:id="@+id/btn_task_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="107dp"
+        android:onClick="switchActivity"
+        android:text="@string/task_4"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="296dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_ask"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:text="@string/option"
+        android:textSize="18sp" />
+</RelativeLayout>
