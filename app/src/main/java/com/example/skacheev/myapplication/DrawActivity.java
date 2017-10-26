@@ -18,45 +18,47 @@ public class DrawActivity extends AppCompatActivity {
     int greenColor = 255;
     int colorDiff = 5;
 
-    Task t;
+    ColorChangerTask t;
 
-    class Task extends Thread {
+    class ColorChangerTask extends Thread {
+        private static final String TAG = "ColorChangerTask";
+
         Runnable invalidator;
-        Boolean redUp = false;
-        Boolean yellowUp = false;
-        Boolean greenUp = false;
+        String redUp = "down";
+        String yellowUp = "down";
+        String greenUp = "down";
 
         @Override
         public void run(){
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-
-                    if (redUp) {
+                    //Log.d(TAG, "red: "+ redUp +", yellow: "+ yellowUp + ", green: "+greenUp);
+                    if (redUp.equals("up")) {
                         redColor += colorDiff;
-                        if (redColor > 255) {redColor = 255; redUp = false;}
+                        if (redColor > 255) {redColor = 255; redUp = "down";}
                     } else {
                         redColor -= colorDiff;
-                        if (redColor <= 100) {redColor = 100;redUp = true;}
+                        if (redColor <= 100) {redColor = 100;redUp = "up";}
                     }
-                    if (yellowUp) {
+                    if (yellowUp.equals("up")) {
                         yellowColor += colorDiff * 2;
-                        if (yellowColor > 255) {yellowColor = 255;yellowUp = false;}
+                        if (yellowColor > 255) {yellowColor = 255;yellowUp = "down";}
                     } else {
                         yellowColor -= colorDiff * 2;
-                        if (yellowColor <= 100) {yellowColor = 100;yellowUp = true;}
+                        if (yellowColor <= 100) {yellowColor = 100;yellowUp = "up";}
                     }
-                    if (greenUp) {
+                    if (greenUp.equals("up")) {
                         greenColor += colorDiff * 3;
-                        if (greenColor > 255) {greenColor = 255; greenUp = false;}
+                        if (greenColor > 255) {greenColor = 255; greenUp = "down";}
                     } else {
                         greenColor -= colorDiff * 3;
-                        if (greenColor <= 100) {greenColor = 100; greenUp = true;}
+                        if (greenColor <= 100) {greenColor = 100; greenUp = "up";}
                     }
                     invalidator.run();
                     Thread.sleep(50);
                 }
             } catch (InterruptedException ignored) {
-                Log.d(TAG, "Color changer thread interrupted");
+                Log.d(TAG, "Color changer thread destroyed");
             }
         }
         void setInvalidator(Runnable r) {
@@ -100,11 +102,12 @@ public class DrawActivity extends AppCompatActivity {
 
             if (t == null) {
                 Log.d(TAG, "Create new color changer thread");
-                t = new Task();
-                t.setInvalidator(new Runnable() {public void run() {
-                    Log.d(TAG, "Invalidate view");
-                    postInvalidate();
-                }});
+                t = new ColorChangerTask();
+                t.setInvalidator(new Runnable() {
+                    public void run() {
+                        postInvalidate();
+                    }
+                });
                 t.start();
             }
         }
@@ -119,6 +122,5 @@ public class DrawActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         t.interrupt();
-        Log.d(TAG, "Color changer thread destroyed");
     }
 }
