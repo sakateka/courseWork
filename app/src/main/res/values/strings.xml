@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Курсовая работа</string>
     <string name="app_calc">Калькулятор</string>
+    <string name="app_draw">2D графика</string>
     <string name="back">back</string>
     <string name="clear">clear</string>
     <string name="mod">mod</string>

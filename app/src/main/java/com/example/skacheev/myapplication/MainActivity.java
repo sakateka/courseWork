@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
                 klass = CalculatorActivity.class;
                 break;
             case R.id.btn_task_2:
-                klass = CalculatorActivity.class;
+                klass = DrawActivity.class;
                 break;
             case R.id.btn_task_3:
                 klass = CalculatorActivity.class;
