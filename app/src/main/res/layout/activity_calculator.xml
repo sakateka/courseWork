@@ -42,7 +42,7 @@
         android:id="@+id/button_pow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_7"
+        android:layout_above="@+id/button_8"
         android:layout_alignLeft="@+id/button_7"
         android:layout_alignStart="@+id/button_7"
         android:layout_marginBottom="11dp"
@@ -203,8 +203,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/button_8"
         android:layout_alignBottom="@+id/button_8"
-        android:layout_toEndOf="@+id/button_8"
-        android:layout_toRightOf="@+id/button_8"
+        android:layout_toEndOf="@+id/button_5"
+        android:layout_toRightOf="@+id/button_5"
         android:onClick="addNumberAction"
         android:text="9"
         tools:ignore="HardcodedText" />
@@ -243,7 +243,7 @@
         android:layout_alignLeft="@+id/button_pow"
         android:layout_alignRight="@+id/button_clr"
         android:layout_alignStart="@+id/button_pow"
-        android:layout_marginBottom="61dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="end"
         android:textAlignment="textEnd" />
 

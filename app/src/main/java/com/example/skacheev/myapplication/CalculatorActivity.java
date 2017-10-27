@@ -182,11 +182,11 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     private void setText(String text) {
-        if (text.length() > 15) {
+        if (text.length() > 13) {
             result.setTextSize(20);
-        } else if (text.length() > 10) {
+        } else if (text.length() > 8) {
             result.setTextSize(40);
-        } else if (text.length() > 7) {
+        } else if (text.length() > 5) {
             result.setTextSize(60);
         } else {
             result.setTextSize(80);

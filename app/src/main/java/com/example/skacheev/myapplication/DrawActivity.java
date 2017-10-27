@@ -13,52 +13,22 @@ import android.view.View;
 public class DrawActivity extends AppCompatActivity {
     private static final String TAG = "DrawActivity";
 
-    int redColor = 255;
-    int yellowColor = 255;
-    int greenColor = 255;
-    int colorDiff = 5;
-
     ColorChangerTask t;
 
     class ColorChangerTask extends Thread {
         private static final String TAG = "ColorChangerTask";
 
         Runnable invalidator;
-        String redUp = "down";
-        String yellowUp = "down";
-        String greenUp = "down";
 
         @Override
         public void run(){
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-                    //Log.d(TAG, "red: "+ redUp +", yellow: "+ yellowUp + ", green: "+greenUp);
-                    if (redUp.equals("up")) {
-                        redColor += colorDiff;
-                        if (redColor > 255) {redColor = 255; redUp = "down";}
-                    } else {
-                        redColor -= colorDiff;
-                        if (redColor <= 100) {redColor = 100;redUp = "up";}
-                    }
-                    if (yellowUp.equals("up")) {
-                        yellowColor += colorDiff * 2;
-                        if (yellowColor > 255) {yellowColor = 255;yellowUp = "down";}
-                    } else {
-                        yellowColor -= colorDiff * 2;
-                        if (yellowColor <= 100) {yellowColor = 100;yellowUp = "up";}
-                    }
-                    if (greenUp.equals("up")) {
-                        greenColor += colorDiff * 3;
-                        if (greenColor > 255) {greenColor = 255; greenUp = "down";}
-                    } else {
-                        greenColor -= colorDiff * 3;
-                        if (greenColor <= 100) {greenColor = 100; greenUp = "up";}
-                    }
                     invalidator.run();
                     Thread.sleep(50);
                 }
             } catch (InterruptedException ignored) {
-                Log.d(TAG, "Color changer thread destroyed");
+                Log.d(TAG, "invalidator thread destroyed");
             }
         }
         void setInvalidator(Runnable r) {
@@ -71,7 +41,14 @@ public class DrawActivity extends AppCompatActivity {
 
         Paint paint = new Paint();
         Rect rect = new Rect();
+        int redColor = 255;
+        int yellowColor = 255;
+        int greenColor = 255;
+        int colorDiff = 5;
 
+        String redUp = "down";
+        String yellowUp = "down";
+        String greenUp = "down";
 
         public TrafficLight(Context context) {
               super(context);
@@ -82,7 +59,19 @@ public class DrawActivity extends AppCompatActivity {
             int cx = getWidth()/2;
             int cy = getHeight()/2;
             int radius = 100;
-            rect.set(cx - 120, cy - 340, cx + 120, cy + 340);
+            if (t == null) {
+                rect.set(cx - 120, cy - 340, cx + 120, cy + 340);
+
+                Log.d(TAG, "Create new invalidator thread");
+                t = new ColorChangerTask();
+                t.setInvalidator(new Runnable() {
+                    public void run() {
+                        postInvalidate();
+                    }
+                });
+                t.start();
+            }
+
 
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.WHITE);
@@ -100,16 +89,29 @@ public class DrawActivity extends AppCompatActivity {
             paint.setStrokeWidth(10);
             canvas.drawRect(rect, paint);
 
-            if (t == null) {
-                Log.d(TAG, "Create new color changer thread");
-                t = new ColorChangerTask();
-                t.setInvalidator(new Runnable() {
-                    public void run() {
-                        postInvalidate();
-                    }
-                });
-                t.start();
+            //Log.d(TAG, "red: "+ redUp +", yellow: "+ yellowUp + ", green: "+greenUp);
+            if (redUp.equals("up")) {
+                redColor += colorDiff;
+                if (redColor > 255) {redColor = 255; redUp = "down";}
+            } else {
+                redColor -= colorDiff;
+                if (redColor <= 100) {redColor = 100;redUp = "up";}
             }
+            if (yellowUp.equals("up")) {
+                yellowColor += colorDiff * 2;
+                if (yellowColor > 255) {yellowColor = 255;yellowUp = "down";}
+            } else {
+                yellowColor -= colorDiff * 2;
+                if (yellowColor <= 100) {yellowColor = 100;yellowUp = "up";}
+            }
+            if (greenUp.equals("up")) {
+                greenColor += colorDiff * 3;
+                if (greenColor > 255) {greenColor = 255; greenUp = "down";}
+            } else {
+                greenColor -= colorDiff * 3;
+                if (greenColor <= 100) {greenColor = 100; greenUp = "up";}
+            }
+
         }
     }
 
