@@ -58,9 +58,16 @@ public class DrawActivity extends AppCompatActivity {
             super.onDraw(canvas);
             int cx = getWidth()/2;
             int cy = getHeight()/2;
-            int radius = 100;
+            int paddingCircle = cy/4;
+            int radius = paddingCircle - paddingCircle/6;
+            int paddingRect = radius + radius/6;
             if (t == null) {
-                rect.set(cx - 120, cy - 340, cx + 120, cy + 340);
+                rect.set(
+                        cx - paddingRect,
+                        cy - (paddingCircle*2 + paddingRect) ,
+                        cx + paddingRect,
+                        cy + (paddingCircle*2 + paddingRect)
+                );
 
                 Log.d(TAG, "Create new invalidator thread");
                 t = new ColorChangerTask();
@@ -78,11 +85,11 @@ public class DrawActivity extends AppCompatActivity {
             canvas.drawPaint(paint);
             // first circle
             paint.setColor(Color.argb(255, redColor, 0, 0));
-            canvas.drawCircle(cx, cy - 220, radius, paint);
+            canvas.drawCircle(cx, cy - paddingCircle*2, radius, paint);
             paint.setColor(Color.argb(255, yellowColor, yellowColor, 0));
             canvas.drawCircle(cx, cy, radius, paint);
             paint.setColor(Color.argb(255, 0, greenColor, 0));
-            canvas.drawCircle(cx, cy + 220, radius, paint);
+            canvas.drawCircle(cx, cy + paddingCircle*2, radius, paint);
 
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.BLACK);
