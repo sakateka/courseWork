@@ -20,8 +20,14 @@
             android:name=".CalculatorActivity"
             android:label="@string/app_calc" />
         <activity
-            android:label="@string/app_draw"
-            android:name=".DrawActivity" />
+            android:name=".DrawActivity"
+            android:label="@string/app_draw" />
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/app_game" />
+        <activity
+            android:name=".GameSettingsActivity"
+            android:label="@string/app_game_settings"/>
     </application>
 
 </manifest>

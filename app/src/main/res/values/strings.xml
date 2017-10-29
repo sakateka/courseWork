@@ -2,6 +2,8 @@
     <string name="app_name">Курсовая работа</string>
     <string name="app_calc">Калькулятор</string>
     <string name="app_draw">2D графика</string>
+    <string name="app_game">2D демо</string>
+    <string name="app_game_settings">2D демо с настройками</string>
     <string name="back">back</string>
     <string name="clear">c</string>
     <string name="mod">mod</string>

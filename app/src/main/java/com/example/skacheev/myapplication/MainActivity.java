@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
                 klass = DrawActivity.class;
                 break;
             case R.id.btn_task_3:
-                klass = CalculatorActivity.class;
+                klass = GameActivity.class;
                 break;
             case R.id.btn_task_4:
-                klass = CalculatorActivity.class;
+                klass = GameSettingsActivity.class;
                 break;
             default:
                 return;
