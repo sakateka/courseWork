@@ -25,7 +25,7 @@ public class DrawActivity extends AppCompatActivity {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     invalidator.run();
-                    Thread.sleep(50);
+                    Thread.sleep(40); // 40 ms give 25 fps for us
                 }
             } catch (InterruptedException ignored) {
                 Log.d(TAG, "invalidator thread destroyed");
