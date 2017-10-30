@@ -163,14 +163,14 @@ public class GameActivity extends AppCompatActivity {
         Octahedron(float px, float py) {
             posX = px;
             posY = py - octahedronSize;
-            xVelocity = octahedronSize*2;
+            xVelocity = octahedronSize;
             yVelocity = octahedronSize;
         }
         @Override
         public void run(){
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-                    Thread.sleep(50);
+                    Thread.sleep(40);
                     if (! update()) {
                         break;
                     }
