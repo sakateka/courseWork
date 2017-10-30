@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
         Intent intent = new Intent(this, klass);
+        View root = (View)v.getParent();
+        intent.putExtra("width", root.getMeasuredWidth());
+        intent.putExtra("height", root.getMeasuredHeight());
+
         startActivity(intent);
     }
 }

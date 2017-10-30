@@ -14,4 +14,5 @@
     <string name="task_2">Задание №2</string>
     <string name="task_3">Задание №3</string>
     <string name="task_4">Задание №4</string>
+    <string name="gray_background">gray_background</string>
 </resources>

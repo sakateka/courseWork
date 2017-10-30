@@ -118,7 +118,6 @@ public class DrawActivity extends AppCompatActivity {
                 greenColor -= colorDiff * 3;
                 if (greenColor <= 100) {greenColor = 100; greenUp = "up";}
             }
-
         }
     }
 
