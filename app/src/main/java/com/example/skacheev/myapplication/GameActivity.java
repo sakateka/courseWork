@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.media.SoundPool;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameActivity extends AppCompatActivity {
 
     private static final String TAG = "GameActivity";
+    int boomID;
+    public SoundPool sp;
 
     int width, height, octahedronSize, barHeight = 0;
     ImageView frame;
@@ -100,6 +103,11 @@ public class GameActivity extends AppCompatActivity {
         t.interrupt();
     }
 
+    public void setSound(SoundPool s, int sampleID) {
+        sp = s;
+        boomID = sampleID;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -163,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
             posX = px;
             posY = py - octahedronSize;
             xVelocity = octahedronSize;
-            yVelocity = octahedronSize;
+            yVelocity = octahedronSize/10;
         }
         @Override
         public void run(){
@@ -205,6 +213,10 @@ public class GameActivity extends AppCompatActivity {
 
             posY += yVelocity;
             if (posY >= height-1) {
+                if (sp != null) {
+                    Log.d(TAG, "Play boom");
+                    sp.play(boomID, 1, 1, 0, 0, 1);
+                }
                 posY = height - octahedronSize/2;
                 directionY = -directionY;
                 yVelocity = -yVelocity/2;
@@ -212,6 +224,10 @@ public class GameActivity extends AppCompatActivity {
             posX += (xVelocity-xVelocity/2) * directionX;
             xVelocity -= xVelocity*(float)0.05;
             if (posX > width-1){
+                if (sp != null) {
+                    Log.d(TAG, "Play boom");
+                    sp.play(boomID, 1, 1, 0, 0, 1);
+                }
                 posX = width - octahedronSize/2;
                 directionX = -directionX;
             }
