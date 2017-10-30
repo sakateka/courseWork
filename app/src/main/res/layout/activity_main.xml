@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,14 +23,14 @@
         android:id="@+id/text_ask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp"
         android:text="@string/ask_text"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp" />
+        tools:layout_editor_absoluteY="16dp" />
 
     <Button
         android:id="@+id/btn_task_2"
@@ -77,4 +78,18 @@
         android:layout_marginTop="29dp"
         android:text="@string/option"
         android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/btn_pref"
+        android:contentDescription="@string/title_activity_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_task_4"
+        android:layout_alignEnd="@+id/text_ask"
+        android:layout_alignRight="@+id/text_ask"
+        android:layout_alignTop="@+id/btn_task_4"
+        android:layout_toEndOf="@+id/btn_task_4"
+        android:layout_toRightOf="@+id/btn_task_4"
+        android:onClick="switchActivity"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
 </RelativeLayout>

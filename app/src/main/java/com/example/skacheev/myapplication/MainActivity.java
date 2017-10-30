@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_task_4:
                 klass = GameSettingsActivity.class;
+                break;
+            case R.id.btn_pref:
+                klass = PreferencesActivity.class;
                 break;
             default:
                 return;
