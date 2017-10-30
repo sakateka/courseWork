@@ -214,24 +214,26 @@ public class GameActivity extends AppCompatActivity {
             posY += yVelocity;
             if (posY >= height-1) {
                 if (sp != null) {
-                    Log.d(TAG, "Play boom");
+                    //Log.d(TAG, "Play boom Bottom");
                     sp.play(boomID, 1, 1, 0, 0, 1);
                 }
                 posY = height - octahedronSize/2;
                 directionY = -directionY;
                 yVelocity = -yVelocity/2;
             }
-            posX += (xVelocity-xVelocity/2) * directionX;
+            posX += (xVelocity-xVelocity/4) * directionX;
             xVelocity -= xVelocity*(float)0.05;
             if (posX > width-1){
                 if (sp != null) {
-                    Log.d(TAG, "Play boom");
+                    //Log.d(TAG, "Play boom Right");
                     sp.play(boomID, 1, 1, 0, 0, 1);
                 }
                 posX = width - octahedronSize/2;
                 directionX = -directionX;
             }
             if (posX < 1) {
+                //Log.d(TAG, "Play boom Left");
+                sp.play(boomID, 1, 1, 0, 0, 1);
                 posX = octahedronSize/2;
                 directionX = -directionX;
             }
