@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 klass = GameSettingsActivity.class;
                 break;
             case R.id.btn_pref:
-                klass = PreferencesActivity.class;
+                klass = SettingsActivity.class;
                 break;
             default:
                 return;

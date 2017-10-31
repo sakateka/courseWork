@@ -21,6 +21,7 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
     int boomID;
     public SoundPool sp;
+    float ySpeed = 23;
 
     int width, height, octahedronSize, barHeight = 0;
     ImageView frame;
@@ -108,6 +109,10 @@ public class GameActivity extends AppCompatActivity {
         boomID = sampleID;
     }
 
+    public void setYSpeed(float speed) {
+        ySpeed = speed;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -115,8 +120,7 @@ public class GameActivity extends AppCompatActivity {
             float y = event.getRawY();
             y -= barHeight;
             Log.d(TAG, String.format("Event on %fx%f", x, y));
-            ActionBar actionBar = getSupportActionBar();
-            Octahedron o = new Octahedron(x, y);
+            Octahedron o = new Octahedron(x, y).setVelocityYSpeed(ySpeed);
             octas.add(o);
             o.start();
             return true;
@@ -137,9 +141,6 @@ public class GameActivity extends AppCompatActivity {
             }
         }
         frame.postInvalidate();
-        for (Octahedron octa : octas) {
-            octa.isHidden = false;
-        }
     }
     void drawOctahedron(int x, int y) {
         float oHalf = octahedronSize/(float)2;
@@ -163,15 +164,15 @@ public class GameActivity extends AppCompatActivity {
     class Octahedron extends Thread {
         private static final String TAG = "Octahedron";
         float directionY = 1, directionX = 1;
-        volatile float posX, posY;
-        volatile boolean isHidden;
+        volatile float posX, posY, velocitySpeed;;
+        volatile boolean isHidden = true;
         float xVelocity, yVelocity;
 
         Octahedron(float px, float py) {
             posX = px;
             posY = py - octahedronSize;
-            xVelocity = octahedronSize;
-            yVelocity = octahedronSize/10;
+            xVelocity = ySpeed;
+            yVelocity = ySpeed/10;
         }
         @Override
         public void run(){
@@ -191,7 +192,7 @@ public class GameActivity extends AppCompatActivity {
             if (isHidden) {
                 return true;
             }
-            yVelocity = yVelocity + yVelocity/(float)3 * directionY;
+            yVelocity = yVelocity + yVelocity/(float)velocitySpeed * directionY;
             if (yVelocity > 0) {
                 if (Math.abs(yVelocity) <= 0.5 || (xVelocity < 0.001 && posY > height - octahedronSize/3)){
                     posX = Float.NaN;
@@ -210,7 +211,7 @@ public class GameActivity extends AppCompatActivity {
             if (posY > height - octahedronSize/3) {
                 yVelocity = Math.abs(yVelocity)/(float)2 * directionY;
             }
-
+//
             posY += yVelocity;
             if (posY >= height-1) {
                 if (sp != null) {
@@ -232,8 +233,10 @@ public class GameActivity extends AppCompatActivity {
                 directionX = -directionX;
             }
             if (posX < 1) {
-                //Log.d(TAG, "Play boom Left");
-                sp.play(boomID, 1, 1, 0, 0, 1);
+                if (sp != null) {
+                    //Log.d(TAG, "Play boom Left");
+                    sp.play(boomID, 1, 1, 0, 0, 1);
+                }
                 posX = octahedronSize/2;
                 directionX = -directionX;
             }
@@ -243,9 +246,12 @@ public class GameActivity extends AppCompatActivity {
         float getPosOctaX() {
             return posX;
         }
+        float getPosOctaY() { return posY; }
 
-        float getPosOctaY() {
-            return posY;
+        Octahedron setVelocityYSpeed(float speed) {
+            velocitySpeed = speed;
+            return this;
         }
+
     }
 }

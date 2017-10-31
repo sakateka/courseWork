@@ -29,8 +29,8 @@
             android:name=".GameSettingsActivity"
             android:label="@string/app_game_settings" />
         <activity
-            android:name=".PreferencesActivity"
-            android:label="@string/title_activity_settings" />
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

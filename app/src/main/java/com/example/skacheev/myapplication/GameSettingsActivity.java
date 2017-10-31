@@ -47,5 +47,6 @@ public class GameSettingsActivity extends GameActivity {
             Log.e(TAG, "failed to load sound files");
         }
         super.setSound(sp, boomID);
+        super.setYSpeed(30);
     }
 }
