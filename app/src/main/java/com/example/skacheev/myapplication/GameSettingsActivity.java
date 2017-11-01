@@ -2,6 +2,7 @@ package com.example.skacheev.myapplication;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -19,6 +20,8 @@ public class GameSettingsActivity extends GameActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.setColors(Color.BLUE, Color.RED);
+
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes =
@@ -47,6 +50,7 @@ public class GameSettingsActivity extends GameActivity {
             Log.e(TAG, "failed to load sound files");
         }
         super.setSound(sp, boomID);
-        super.setYSpeed(30);
+        // TODO: allowed boost from preferences from 0.01 to 1.00
+        super.setXYBoost((float)0.25, (float)0.25);
     }
 }

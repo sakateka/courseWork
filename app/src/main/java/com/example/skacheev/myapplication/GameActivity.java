@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.media.SoundPool;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,13 +20,17 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
     int boomID;
     public SoundPool sp;
-    float ySpeed = 23;
+    float boostForX = (float)0.20;
+    float boostForY = (float)0.20;
 
     int width, height, octahedronSize, barHeight = 0;
     ImageView frame;
     Bitmap bitmap;
-    final Canvas canvas = new Canvas();
+    int backgroundColor = Color.GRAY;
     Paint paint = new Paint();
+    int octahedronColor = Color.GREEN;
+    final Canvas canvas = new Canvas();
+
 
     CopyOnWriteArrayList<Octahedron> octas = new CopyOnWriteArrayList<>();
 
@@ -70,12 +73,11 @@ public class GameActivity extends AppCompatActivity {
         }
         octahedronSize = width/100*10;
 
-        paint.setColor(Color.GREEN);
-
+        paint.setColor(octahedronColor);
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         canvas.setBitmap(bitmap);
-        canvas.drawColor(Color.GRAY);
-        frame = (ImageView) findViewById(R.id.gameView);
+        canvas.drawColor(backgroundColor);
+        frame = findViewById(R.id.gameView);
         frame.setImageBitmap(bitmap);
         t = new RedrawTask().setInvalidator(
                 new Runnable() {
@@ -109,8 +111,13 @@ public class GameActivity extends AppCompatActivity {
         boomID = sampleID;
     }
 
-    public void setYSpeed(float speed) {
-        ySpeed = speed;
+    public void setXYBoost(float x, float y) {
+        boostForX = x;
+        boostForY = y;
+    }
+    public void setColors(int background, int octahedron) {
+        this.backgroundColor = background;
+        this.octahedronColor = octahedron;
     }
 
     @Override
@@ -120,7 +127,7 @@ public class GameActivity extends AppCompatActivity {
             float y = event.getRawY();
             y -= barHeight;
             Log.d(TAG, String.format("Event on %fx%f", x, y));
-            Octahedron o = new Octahedron(x, y).setVelocityYSpeed(ySpeed);
+            Octahedron o = new Octahedron(x, y).setVelocityBoost(boostForX, boostForY);
             octas.add(o);
             o.start();
             return true;
@@ -129,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void redraw(){
-        canvas.drawColor(Color.GRAY);
+        canvas.drawColor(backgroundColor);
         for (Octahedron octa : octas) {
             float x = octa.getPosOctaX();
             float y = octa.getPosOctaY();
@@ -164,15 +171,17 @@ public class GameActivity extends AppCompatActivity {
     class Octahedron extends Thread {
         private static final String TAG = "Octahedron";
         float directionY = 1, directionX = 1;
-        volatile float posX, posY, velocitySpeed;;
+        volatile float posX, posY;
         volatile boolean isHidden = true;
+
         float xVelocity, yVelocity;
+        float boostY, boostX;
 
         Octahedron(float px, float py) {
             posX = px;
             posY = py - octahedronSize;
-            xVelocity = ySpeed;
-            yVelocity = ySpeed/10;
+            xVelocity = octahedronSize/3;
+            yVelocity = octahedronSize/5;
         }
         @Override
         public void run(){
@@ -192,15 +201,11 @@ public class GameActivity extends AppCompatActivity {
             if (isHidden) {
                 return true;
             }
-            yVelocity = yVelocity + yVelocity/(float)velocitySpeed * directionY;
-            if (yVelocity > 0) {
-                if (Math.abs(yVelocity) <= 0.5 || (xVelocity < 0.001 && posY > height - octahedronSize/3)){
-                    posX = Float.NaN;
-                    posY = Float.NaN;
-                    return false;
-                }
-            }
-            if (Math.abs(yVelocity) <= 2) {
+
+            // Y coordinates
+            yVelocity += yVelocity* boostX * directionY;
+            if (Math.abs(yVelocity) <= 1.5) {
+                // reverse direction when octahedron lost too much speed
                 directionY = -directionY;
                 if (yVelocity > 0) {
                     yVelocity /= yVelocity;
@@ -208,23 +213,30 @@ public class GameActivity extends AppCompatActivity {
                     yVelocity *= yVelocity;
                 }
             }
-            if (posY > height - octahedronSize/3) {
-                yVelocity = Math.abs(yVelocity)/(float)2 * directionY;
-            }
-//
+
             posY += yVelocity;
-            if (posY >= height-1) {
-                if (sp != null) {
+            if (posY >= height-octahedronSize/2 && directionY > 0) {
+                posY = height - octahedronSize/2;
+                directionY = -directionY;
+                // bottom boom decrease speed by half
+                yVelocity = Math.abs(yVelocity)/(float)2 * directionY;
+
+                if (Math.abs(yVelocity) > 2 && sp != null) {
                     //Log.d(TAG, "Play boom Bottom");
                     sp.play(boomID, 1, 1, 0, 0, 1);
                 }
-                posY = height - octahedronSize/2;
-                directionY = -directionY;
-                yVelocity = -yVelocity/2;
             }
-            posX += (xVelocity-xVelocity/4) * directionX;
-            xVelocity -= xVelocity*(float)0.05;
-            if (posX > width-1){
+            if (Math.abs(yVelocity) <= 0.1 && Math.abs(xVelocity) <= 0.1){
+                posX = Float.NaN;
+                posY = Float.NaN;
+                return false;
+            }
+
+
+            // X coordinates
+            posX += xVelocity * directionX;
+            xVelocity -= xVelocity*(float)0.03;
+            if (posX > width-octahedronSize/2){
                 if (sp != null) {
                     //Log.d(TAG, "Play boom Right");
                     sp.play(boomID, 1, 1, 0, 0, 1);
@@ -232,7 +244,7 @@ public class GameActivity extends AppCompatActivity {
                 posX = width - octahedronSize/2;
                 directionX = -directionX;
             }
-            if (posX < 1) {
+            if (posX < octahedronSize/2) {
                 if (sp != null) {
                     //Log.d(TAG, "Play boom Left");
                     sp.play(boomID, 1, 1, 0, 0, 1);
@@ -248,8 +260,9 @@ public class GameActivity extends AppCompatActivity {
         }
         float getPosOctaY() { return posY; }
 
-        Octahedron setVelocityYSpeed(float speed) {
-            velocitySpeed = speed;
+        Octahedron setVelocityBoost(float boostX, float boostY) {
+            this.boostX = boostX;
+            this.boostY = boostY;
             return this;
         }
 
