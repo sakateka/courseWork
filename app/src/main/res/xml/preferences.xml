@@ -1,33 +1,41 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations" />
-
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
     <EditTextPreference
         android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
+        android:defaultValue="@string/pref_default_velocity_y"
+        android:inputType="number"
+        android:key="velocity_y_key"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
+        android:title="@string/pref_title_velocity_y" />
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_velocity_x"
+        android:inputType="number"
+        android:key="velocity_x_key"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_velocity_x" />
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
     <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/pref_example_list_titles"
-        android:entryValues="@array/pref_example_list_values"
-        android:key="example_list"
+        android:defaultValue="#43a047"
+        android:entries="@array/pref_color_octahedron_list_titles"
+        android:entryValues="@array/pref_color_octahedron_list_values"
+        android:key="octahedron_color_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_add_friends_to_messages" />
+        android:title="@string/pref_title_color_octahedron" />
+    <ListPreference
+        android:defaultValue="#757575"
+        android:entries="@array/pref_color_background_list_titles"
+        android:entryValues="@array/pref_color_background_list_values"
+        android:key="background_color_key"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_color_background" />
+
 
 </PreferenceScreen>
