@@ -1,27 +1,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_velocity_y"
+        android:defaultValue="@string/pref_default_boost_y"
         android:inputType="number"
-        android:key="velocity_y_key"
+        android:key="boost_y_key"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_velocity_y" />
+        android:title="@string/pref_title_boost_y" />
     <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_velocity_x"
+        android:defaultValue="@string/pref_default_boost_x"
         android:inputType="number"
-        android:key="velocity_x_key"
+        android:key="boost_x_key"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_velocity_x" />
+        android:title="@string/pref_title_boost_x" />
 
 
     <ListPreference
-        android:defaultValue="#43a047"
+        android:defaultValue="#64dd17"
         android:entries="@array/pref_color_octahedron_list_titles"
         android:entryValues="@array/pref_color_octahedron_list_values"
         android:key="octahedron_color_key"

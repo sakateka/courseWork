@@ -1,5 +1,6 @@
 package com.example.skacheev.myapplication;
 
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.IOException;
@@ -20,7 +22,13 @@ public class GameSettingsActivity extends GameActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.setColors(Color.BLUE, Color.RED);
+        SharedPreferences shPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+        String oColor = shPrefs.getString(SettingsActivity.OH_COLOR, "#64dd17");
+        String bColor = shPrefs.getString(SettingsActivity.BG_COLOR, "#757575");
+
+        super.setColors(Color.parseColor(bColor), Color.parseColor(oColor));
 
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -50,7 +58,16 @@ public class GameSettingsActivity extends GameActivity {
             Log.e(TAG, "failed to load sound files");
         }
         super.setSound(sp, boomID);
-        // TODO: allowed boost from preferences from 0.01 to 1.00
-        super.setXYBoost((float)0.25, (float)0.25);
+        String xBoostString = shPrefs.getString(SettingsActivity.BOOST_X_KEY, "25");
+        String yBoostString = shPrefs.getString(SettingsActivity.BOOST_Y_KEY, "25");
+        float xBoost = (float)25;
+        float yBoost = (float)25;
+        try {
+            xBoost = Float.parseFloat(xBoostString);
+            yBoost = Float.parseFloat(yBoostString);
+        } catch (NumberFormatException ex) {
+            Log.d(TAG, String.format("Failed to parse as float %s", ex));
+        }
+        super.setXYBoost(xBoost/(float)100, yBoost/(float)100);
     }
 }

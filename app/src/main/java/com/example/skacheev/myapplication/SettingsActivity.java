@@ -1,60 +1,74 @@
 package com.example.skacheev.myapplication;
 
-import android.annotation.TargetApi;
+
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
+import android.util.Log;
+import android.widget.Toast;
 
-import java.util.List;
+public class SettingsActivity extends PreferenceActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+    public static final String BOOST_X_KEY = "boost_x_key";
+    public static final String BOOST_Y_KEY = "boost_y_key";
+    public static final String BG_COLOR = "background_color_key";
+    public static final String OH_COLOR = "octahedron_color_key";
+    private static final String TAG = "SettingsActivity";
+    static Context appContext;
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
+    public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+        String value = preferences.getString(key, "");
+        Preference pref = findPreference(key);
 
-            if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
+        Log.d(TAG, String.format("Got new value %s for preference %s", value, pref));
+        if (key.equals(BG_COLOR) || key.equals(OH_COLOR)) {
+            ListPreference listPreference = (ListPreference) pref;
+            int index = listPreference.findIndexOfValue(value);
+            pref.setSummary(index >= 0 ? listPreference.getEntries()[index]: null);
+        } else {
+            int intValue = -1;
+            try {
+                intValue = Integer.parseInt(value);
 
-            } else {
-                preference.setSummary(stringValue);
+            } catch (NumberFormatException ex) {
+                Log.d(TAG, String.format("Failed to parse %s as integer", value));
             }
-            return true;
+            if (intValue < 1 || intValue > 100) {
+                Log.d(TAG, String.format("Failed to set preference %s to %s", pref, value));
+                Toast.makeText(
+                        appContext,
+                        "Choose something between 1 and 100",
+                        Toast.LENGTH_LONG
+                ).show();
+                return;
+            }
+            pref.setSummary(value);
         }
+        Log.d(TAG, String.format("Set preference %s to %s", pref, value));
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-        addPreferencesFromResource(R.xml.preferences);
+    protected void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        appContext = getApplicationContext();
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
     }
 }

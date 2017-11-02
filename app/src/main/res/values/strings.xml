@@ -24,10 +24,10 @@
 
     <!-- Strings related to Settings -->
 
-    <string name="pref_title_velocity_y">Ускорение по Y</string>
-    <string name="pref_default_velocity_y">10</string>
-    <string name="pref_title_velocity_x">Замедление по X</string>
-    <string name="pref_default_velocity_x">3</string>
+    <string name="pref_title_boost_y">Ускорение по Y</string>
+    <string name="pref_default_boost_y">23</string>
+    <string name="pref_title_boost_x">Замедление по X</string>
+    <string name="pref_default_boost_x">28</string>
 
 
     <string name="pref_title_color_background">Цвет фона</string>
@@ -50,7 +50,7 @@
         <item>#ff0000</item>
         <item>#ffa000</item>
         <item>#ffea00</item>
-        <item>#43a047</item>
+        <item>#64dd17</item>
         <item>#00e5ff</item>
         <item>#304ffe</item>
         <item>#aa00ff</item>
@@ -76,7 +76,7 @@
         <item>#ff0000</item>
         <item>#ffa000</item>
         <item>#ffea00</item>
-        <item>#43a047</item>
+        <item>#64dd17</item>
         <item>#00e5ff</item>
         <item>#304ffe</item>
         <item>#aa00ff</item>
