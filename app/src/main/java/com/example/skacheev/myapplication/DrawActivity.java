@@ -16,6 +16,7 @@ public class DrawActivity extends AppCompatActivity {
     ColorChangerTask t;
 
     class ColorChangerTask extends Thread {
+        // Тред занимающийся посылкой сигналов перерисовки в DrawActivity
         private static final String TAG = "ColorChangerTask";
 
         Runnable invalidator;
@@ -79,7 +80,7 @@ public class DrawActivity extends AppCompatActivity {
                 t.start();
             }
 
-
+            // Прорисовка светофора
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.WHITE);
             canvas.drawPaint(paint);
@@ -97,6 +98,9 @@ public class DrawActivity extends AppCompatActivity {
             canvas.drawRect(rect, paint);
 
             //Log.d(TAG, "red: "+ redUp +", yellow: "+ yellowUp + ", green: "+greenUp);
+
+            // Вычисление нового цвета светофора
+            // эти цвета будут нарисованы на следующей итерации
             if (redUp.equals("up")) {
                 redColor += colorDiff;
                 if (redColor > 255) {redColor = 255; redUp = "down";}

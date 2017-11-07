@@ -26,6 +26,7 @@ public class SettingsActivity extends PreferenceActivity
 
         Log.d(TAG, String.format("Got new value %s for preference %s", value, pref));
         if (key.equals(BG_COLOR) || key.equals(OH_COLOR)) {
+            // Сохраняем выбранные цвета, key содержит id нужного цвета
             ListPreference listPreference = (ListPreference) pref;
             int index = listPreference.findIndexOfValue(value);
             pref.setSummary(index >= 0 ? listPreference.getEntries()[index]: null);
@@ -38,6 +39,9 @@ public class SettingsActivity extends PreferenceActivity
                 Log.d(TAG, String.format("Failed to parse %s as integer", value));
             }
             if (intValue < 1 || intValue > 100) {
+                // Допустимые значения для ускорения в диапазоне от 1 до 100
+                // Если пользователь ввел другое значение, то показываем подсказку
+                // и игнорируем ввод.
                 Log.d(TAG, String.format("Failed to set preference %s to %s", pref, value));
                 Toast.makeText(
                         appContext,

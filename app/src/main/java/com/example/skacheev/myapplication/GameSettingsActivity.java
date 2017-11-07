@@ -24,7 +24,7 @@ public class GameSettingsActivity extends GameActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences shPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-
+        // Получаем сохраненные настройки цвета
         String oColor = shPrefs.getString(SettingsActivity.OH_COLOR, "#64dd17");
         String bColor = shPrefs.getString(SettingsActivity.BG_COLOR, "#757575");
 

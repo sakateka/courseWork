@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    // Выбор задания реализован через switсh, при нажатии на любую кнопку
+    // проверяется её id и после этого выбирается нужный для загрузки класс
     public void switchActivity(View v) {
         Class klass;
         switch (v.getId()) {
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return;
         }
+        // некоторым заданиям нужно знать текущий размер экрана на этапе onCreate View
+        // для этого из MainActivity передаем эту информацию через Intent
         Intent intent = new Intent(this, klass);
         View root = (View)v.getParent();
         intent.putExtra("width", root.getMeasuredWidth());

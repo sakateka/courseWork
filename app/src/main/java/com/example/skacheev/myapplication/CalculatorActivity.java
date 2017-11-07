@@ -15,6 +15,7 @@ public class CalculatorActivity extends AppCompatActivity {
 
     private static final String TAG = "CalculatorActivity";
     private static final String AVAILABLE_ACTIONS = "-+*/^%";
+    // тектосове поле результата
     private TextView result;
 
     private String first_operand = "";
@@ -29,17 +30,23 @@ public class CalculatorActivity extends AppCompatActivity {
         result = (TextView) findViewById(R.id.result);
     }
 
+    // обработчик события клавиши backspace (удаление одного символа)
     public void backAction(View v) {
         String text = result.getText().toString();
         if (text.length() != 0) {
             text = text.substring(0, text.length()-1);
             setText(text);
             if (text.matches(".*["+ AVAILABLE_ACTIONS +"].*")) {
+                // Если арифметическая операция еще присутсвует в тексте,
+                // то текущая операция считается иницилизированной
+
                 Log.d(TAG, "backAction: string contains 'operator' " + text);
                 if (second_operand.length()> 0) {
                     second_operand = second_operand.substring(0, second_operand.length() - 1);
                 }
             } else {
+                // Иначе сбрасываем текущую операцию и второй аргумент.
+
                 Log.d(TAG, "backAction: clear operator and second_operand");
                 operator = "";
                 second_operand = "";
@@ -47,13 +54,13 @@ public class CalculatorActivity extends AppCompatActivity {
                 first_operand = text;
             }
         } else {
-            Log.d(TAG, "backAction: clear first_operand");
-            operator = "";
-            first_operand = "";
-            second_operand = "";
+            // Если текст кончился, вызываем сброс всего через clearAction
+            this.clearAction(v);
         }
     }
     public void clearAction(View v) {
+        // Сбрасываем все парамерты
+        Log.d(TAG, "backAction: clear all operands and operator");
         first_operand = "";
         second_operand = "";
         operator = "";
@@ -61,11 +68,12 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     public void addNumberAction(View view) {
-
+        // Обработчик события нажатия цифр и точки
         Button button = (Button)view;
         String symbol = button.getText().toString();
         Log.d(TAG, "addNumberAction: type symbol " + symbol);
 
+        // определяем куда нужно добавлять текст
         String where = "first";
         String currentText = first_operand;
         if (operator.length() != 0) {
@@ -74,14 +82,17 @@ public class CalculatorActivity extends AppCompatActivity {
         }
         Log.d(TAG, "addNumberAction: try add symbol '"+ symbol +"' for "+ where +" operand");
 
+        // Если тут точка уже есть, то ничего не делаем
         if (symbol.equals(".")) {
             if (currentText.indexOf('.') >= 0) {
                 return;
             }
         }
 
+        // добавляем текст.
         currentText += symbol;
         Log.d(TAG, "addNumberAction: "+where+"_operand = " + currentText);
+        // определяем куда записать его обратно
         if (operator.length() == 0) {
             first_operand = currentText;
             setText(currentText);
@@ -91,6 +102,7 @@ public class CalculatorActivity extends AppCompatActivity {
         }
     }
 
+    // обработчик событий нажатия арифметических операций
     public void computeAction(View view){
         String resText = result.getText().toString();
         if (resText.length() == 0) {
@@ -102,6 +114,8 @@ public class CalculatorActivity extends AppCompatActivity {
         }
 
         Button button = (Button)view;
+        // Если текст на кнопке не односимволтный,
+        // то преобразуем его в символ операции
         String opText = button.getText().toString();
         switch (opText) {
             case "mod":
@@ -112,6 +126,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 break;
         }
 
+        // Если второго операнда еще нет, то просто запоминаем операцию
         if (second_operand.length() == 0) {
             if (opText.equals("=")) {
                 return;
@@ -132,6 +147,7 @@ public class CalculatorActivity extends AppCompatActivity {
         double res;
         double second;
         try {
+            // Пробуем распарсить первый и второй операнды
             res = Double.parseDouble(first_operand);
             second = Double.parseDouble(second_operand);
         } catch (NumberFormatException e) {
@@ -141,6 +157,7 @@ public class CalculatorActivity extends AppCompatActivity {
             operator = "";
         }
 
+        // Выполняем необходимую арифметическую операцию
         Log.d(TAG, "computeAction: computation invoked by: " + opText);
         switch (operator) {
             case "+":
@@ -153,6 +170,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 res *= second;
                 break;
             case "/":
+                // Если случилось деление на 0 то возвращем NaN
                 if (second == 0) {
                     res = Double.NaN;
                 } else {
@@ -172,6 +190,8 @@ public class CalculatorActivity extends AppCompatActivity {
         second_operand = "";
 
         String resultText = format(Locale.getDefault(), "%s", fmt(res));
+        // Если арифметическая операция вызвана не через равно,
+        // то результат помещаем в первый операнд
         if (! opText.equals("=")) {
             Log.d(TAG, "computeAction: preserve first operand value: " + resultText);
             first_operand = resultText;
@@ -181,6 +201,8 @@ public class CalculatorActivity extends AppCompatActivity {
         setText(resultText);
     }
 
+    // Ресайзим текст в тексотом поле результата, чтобы при малом кол-ве цифр они были крупными
+    // а при большом кол-ве цифр помещались на экране.
     private void setText(String text) {
         if (text.length() > 13) {
             result.setTextSize(20);
@@ -194,6 +216,7 @@ public class CalculatorActivity extends AppCompatActivity {
         result.setText(text);
     }
 
+    // Удобное форматирование числа или строки в строку.
     private String fmt(double d) {
         if (d == (long)d)
             return format(Locale.getDefault(), "%d", (long) d);

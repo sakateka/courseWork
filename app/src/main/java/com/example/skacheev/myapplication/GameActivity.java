@@ -90,6 +90,7 @@ public class GameActivity extends AppCompatActivity {
         Log.d(TAG, "start redraw thread");
         t.start();
 
+        // определяем размер акшенБара, чтобы правильно вычислять координаты нажатия
         TypedValue tv = new TypedValue();
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             barHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
@@ -122,6 +123,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // Обработчик нажатия на экран добавляет новый октаэдр
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             float x = event.getRawX();
             float y = event.getRawY();
@@ -136,10 +138,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void redraw(){
+        // Перерисовывает фон и все октаэдры
         canvas.drawColor(backgroundColor);
         for (Octahedron octa : octas) {
             float x = octa.getPosOctaX();
             float y = octa.getPosOctaY();
+            // Если октаэдр остановился, то удаляем его
             if (Float.isNaN(x) || Float.isNaN(y)) {
                 octas.remove(octa);
             } else {
@@ -150,6 +154,7 @@ public class GameActivity extends AppCompatActivity {
         frame.postInvalidate();
     }
     void drawOctahedron(int x, int y) {
+        // Рисует один октаэдр
         float oHalf = octahedronSize/(float)2;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(oHalf/(float)10);
@@ -169,6 +174,8 @@ public class GameActivity extends AppCompatActivity {
 
 
     class Octahedron extends Thread {
+        // Тред октаэдра, в цикле занимается персчетом своей позиции
+        // Между пересчетами засыпает на короткий интервал (40ms)
         private static final String TAG = "Octahedron";
         float directionY = 1, directionX = 1;
         volatile float posX, posY;
